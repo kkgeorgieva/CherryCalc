@@ -6,7 +6,7 @@ public class Subtraction <T extends Number> implements Operation<T>{
 
 
 	@Override
-	public void solve() {
+	public void solve(T lhs, T rhs) {
 		// TODO Auto-generated method stub
 		
 	}
