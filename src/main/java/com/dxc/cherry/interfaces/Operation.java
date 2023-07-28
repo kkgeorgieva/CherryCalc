@@ -2,6 +2,6 @@ package com.dxc.cherry.interfaces;
 
 public interface Operation<T extends Number> {
 	
-	public void  calculate();
+	public void  solve();
 
 }
