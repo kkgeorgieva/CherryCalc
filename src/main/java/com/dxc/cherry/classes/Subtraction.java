@@ -2,11 +2,11 @@ package com.dxc.cherry.classes;
 
 import com.dxc.cherry.interfaces.Operation;
 
-public class Subtraction <T extends Number> implements Operation<T>{
+public class Subtraction implements Operation{
 
 
 	@Override
-	public void solve(T lhs, T rhs) {
+	public void solve(float lhs, float rhs) {
 		// TODO Auto-generated method stub
 		
 	}

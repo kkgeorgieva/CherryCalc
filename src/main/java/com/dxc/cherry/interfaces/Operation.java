@@ -1,7 +1,7 @@
 package com.dxc.cherry.interfaces;
 
-public interface Operation<T extends Number> {
+public interface Operation {
 	
-	public void  solve(T lhs, T rhs);
+	public void  solve(float lhs, float rhs);
 
 }
