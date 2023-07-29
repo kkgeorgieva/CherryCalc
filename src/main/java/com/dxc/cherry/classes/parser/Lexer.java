@@ -30,12 +30,15 @@ public class Lexer {
 			currentCh = '\0';
 	}
 
-	private Token generateNumber() {
+	private Token generateNumber() throws InvalidOperationException {
 		int decCount = 0;
 		StringBuilder sb = new StringBuilder();
 		while (numberList.contains(currentCh)) {
-			if (currentCh == '.' && decCount <= 1)
+			if (currentCh == '.' && decCount < 1) {
 				decCount++;
+			} else if (currentCh == '.') {
+				throw new InvalidOperationException(String.format("%c is not allowed more than once.", currentCh));
+			}
 			if (sb.length() < 1 && decCount > 0)
 				sb.append('0');
 			sb.append(currentCh);
