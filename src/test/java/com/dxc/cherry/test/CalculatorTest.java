@@ -41,11 +41,11 @@ class CalculatorTest {
 	 */
 	@Test
 	void TestTokens() throws InvalidOperationException {
-		Lexer lexer = new Lexer("5 + 4 + 7");
+		Lexer lexer = new Lexer("5 + 4.5 + 7");
 		ArrayList<Token> tokens = (ArrayList<Token>) lexer.getTokens();
 		String expected = "Token{type=NUMBER, lexeme='5'}\n"
 				+ "Token{type=PLUS, lexeme='+'}\n"
-				+ "Token{type=NUMBER, lexeme='4'}\n"
+				+ "Token{type=NUMBER, lexeme='4.5'}\n"
 				+ "Token{type=PLUS, lexeme='+'}\n"
 				+ "Token{type=NUMBER, lexeme='7'}\n";
 		String actual = lexer.toString();
