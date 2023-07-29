@@ -45,12 +45,13 @@ public class Lexer {
 	
 	
 	public List<Token> getTokens() throws InvalidOperationException{
-		while(true) {
-			if(Character.isWhitespace(currentCh)) {
+		while(currentPos<input.length()) {
+			}if(Character.isWhitespace(currentCh)) {
 				getNext();
-				continue;
-			}
-			else if (currentCh == '+') {
+			}else if(numberList.contains(currentCh)) {
+				tokens.add(generateNumber());
+				
+			}else if (currentCh == '+') {
                 tokens.add(new Token(Token.Type.PLUS, "+"));
                 getNext();
             } else if (currentCh == '-') {
@@ -68,12 +69,10 @@ public class Lexer {
             } else if (currentCh == ')') {
                 tokens.add(new Token(Token.Type.RIGHT_PAREN, ")"));
                 getNext();
-            } else if(currentCh == '\0') {
-				tokens.add(new Token(Token.Type.END_OF_INPUT, "\0"));
-				break;
-			} else throw new InvalidOperationException(String.format("%c is unsupported type.", currentCh));
+            } else throw new InvalidOperationException(String.format("%c is unsupported type.", currentCh));
 			getNext();
-		}
+		
+		tokens.add(new Token(Token.Type.END_OF_INPUT, "\0"));
 		return tokens;
 	}
 	
