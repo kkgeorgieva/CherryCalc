@@ -7,7 +7,7 @@ import com.dxc.cherry.exceptions.InvalidOperationException;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        String expression = "(5 + 4) * 2";
+        String expression = "5 + (7 * 4 + 4) * 4";
         Lexer lexer = new Lexer(expression);
         List<Token> tokens = new ArrayList<Token>();
 		try {

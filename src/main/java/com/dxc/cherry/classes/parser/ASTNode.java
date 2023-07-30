@@ -26,4 +26,12 @@ public class ASTNode {
             return "(" + left.toString() + " " + value + " " + right.toString() + ")";
         }
     }
+    
+//    public String toString() {
+//        if (left == null && right == null) {
+//            return value;
+//        } else {
+//            return "ASTNode(" + value + ", " + left.toString() + ", " + right.toString() + ")";
+//        }
+//    }
 }
