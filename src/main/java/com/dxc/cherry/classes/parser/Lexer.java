@@ -76,7 +76,7 @@ public class Lexer {
 				break;
 			} else
 				throw new InvalidOperationException(String.format("%c is unsupported type.", currentCh));
-			getNext();
+//			getNext();
 		}
 
 //		tokens.add(new Token(Token.Type.END_OF_INPUT, "\0"));

@@ -14,6 +14,10 @@ public class ASTNode {
         this.left = left;
         this.right = right;
     }
+    
+    public String getValue() {
+    	return value;
+    }
 
     public String toString() {
         if (left == null && right == null) {
