@@ -6,8 +6,8 @@ import java.util.List;
 import com.dxc.cherry.exceptions.InvalidOperationException;
 
 public class Main {
-    public static void main(String[] args) {
-        String expression = "5 + 7 * 4 + 4 * 4";
+    public static void main(String[] args) throws Exception {
+        String expression = "(5 + 4) * 2";
         Lexer lexer = new Lexer(expression);
         List<Token> tokens = new ArrayList<Token>();
 		try {
@@ -21,7 +21,8 @@ public class Main {
             System.out.println(token);
         }
 
-        ASTNode ast = Parser.parseExpression(tokens);
+        Parser parser = new Parser(tokens);
+        ASTNode ast = parser.parseExpression();
         System.out.println(ast.toString());
     }
 }

@@ -79,7 +79,7 @@ public class Lexer {
 //			getNext();
 		}
 
-//		tokens.add(new Token(Token.Type.END_OF_INPUT, "\0"));
+		tokens.add(new Token(Token.Type.END_OF_INPUT, "\0"));
 		return tokens;
 	}
 
