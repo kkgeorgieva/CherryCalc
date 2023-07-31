@@ -3,10 +3,12 @@ package com.dxc.cherry.classes.parser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 
 import com.dxc.cherry.classes.parser.Token.Type;
 import com.dxc.cherry.exceptions.InvalidOperationException;
 
+//JavaDoc
 public class Lexer {
 	private final List<Token> tokens;
 	private final List<Character> numberList;
@@ -22,6 +24,7 @@ public class Lexer {
 		this.currentCh = input.length() > 0 ? this.input.charAt(currentPos) : '\0';
 	}
 
+	//JavaDoc
 	private void getNext() {
 		if (currentPos < this.input.length() - 1) {
 			currentPos++;
@@ -30,6 +33,7 @@ public class Lexer {
 			currentCh = '\0';
 	}
 
+	//JavaDoc
 	private Token generateNumber() throws InvalidOperationException {
 		int decCount = 0;
 		StringBuilder sb = new StringBuilder();
@@ -47,6 +51,7 @@ public class Lexer {
 		return new Token(Type.NUMBER, sb.toString());
 	}
 
+	//JavaDoc
 	public List<Token> getTokens() throws InvalidOperationException {
 		while (currentPos < input.length()) {
 			if (Character.isWhitespace(currentCh)) {
@@ -91,4 +96,36 @@ public class Lexer {
 		}
 		return str.toString();
 	}
+	
+	// A method that returns true if the input expression has balanced parentheses, and false otherwise
+	public static boolean isBalanced(String expression) {
+	  // Create a stack to store the opening parentheses
+	  Stack<Character> stack = new Stack<>();
+	  // Loop through each character in the expression
+	  for (char c : expression.toCharArray()) {
+	    // If the character is an opening parenthesis, push it to the stack
+	    if (c == '(' || c == '{' || c == '[') {
+	      stack.push(c);
+	    }
+	    // If the character is a closing parenthesis, pop the top element from the stack and check if it matches
+	    else if (c == ')' || c == '}' || c == ']') {
+	      // If the stack is empty, it means there is no matching opening parenthesis, so return false
+	      if (stack.isEmpty()) {
+	        return false;
+	      }
+	      // Pop the top element from the stack
+	      char top = stack.pop();
+	      // Check if it matches with the closing parenthesis
+	      if ((c == ')' && top != '(') || (c == '}' && top != '{') || (c == ']' && top != '[')) {
+	        // If not, it means the parentheses are not balanced, so return false
+	        return false;
+	      }
+	    }
+	  }
+	  // After looping through all the characters, check if the stack is empty
+	  // If yes, it means all the parentheses are balanced, so return true
+	  // If no, it means there are some unmatched opening parentheses, so return false
+	  return stack.isEmpty();
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.dxc.cherry.classes.parser;
 
+//JavaDoc
 public class Token {
     public enum Type {
         NUMBER,
@@ -24,6 +25,7 @@ public class Token {
         return type;
     }
 
+    
     public String getLexeme() {
         return lexeme;
     }
