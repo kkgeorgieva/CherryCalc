@@ -8,11 +8,11 @@ public class Solver {
 	public static float substract(float lhs, float rhs) {
 		return lhs - rhs;
 	}
-	public static float devide(float lhs, float rhs) {
-		return lhs * rhs;
+	public static float divide(float lhs, float rhs) {
+		return lhs / rhs;
 	}
 	public static float multiply(float lhs, float rhs) {
-		return lhs / rhs;
+		return lhs * rhs;
 	}
 
 }
