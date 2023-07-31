@@ -7,14 +7,22 @@ import com.dxc.cherry.classes.parser.Lexer;
 import com.dxc.cherry.classes.parser.Parser;
 import com.dxc.cherry.classes.parser.Token;
 
-//JavaDoc
+/**
+ * The calculator class is responsible for making evaluations of arithmetic expressions.
+ * It performs a lexical analysis and parsing and creates an Abstract Syntax Tree, after which it evaluates the expression. 
+ */
 public class Calculator {
 
 	private float result;
 	private Lexer lexer;
 	private Parser parser;
 
-	//JavaDoc
+
+	/**
+	 * @param ex This string represents the given arithmetic expression to be evaluated.
+	 * @return Returns the result of the evaluated expression.
+	 * @throws Exception Throws an exception if an error occurs during the process of lexical analysis, parsing or evaluation.
+	 */
 	public float calculate(String ex) throws Exception {
 		lexer = new Lexer(ex);
 		List<Token> tokens = lexer.getTokens();
@@ -27,7 +35,9 @@ public class Calculator {
 		return result;	
 	}
 
-	//JavaDoc
+	/**
+	 * @returnReturns the result of the evaluated expression.
+	 */
 	public float returnResult() {
 		return result;
 	}

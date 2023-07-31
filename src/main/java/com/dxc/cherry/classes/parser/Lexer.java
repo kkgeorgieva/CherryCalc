@@ -8,14 +8,21 @@ import java.util.Stack;
 import com.dxc.cherry.classes.parser.Token.Type;
 import com.dxc.cherry.exceptions.InvalidOperationException;
 
-//JavaDoc
+/**
+ * The Lexer class performs lexical analysis on a given input expression and converts it into a list of tokens.
+ */
 public class Lexer {
 	private final List<Token> tokens;
 	private final List<Character> numberList;
 	private final String input;
 	private int currentPos;
 	private char currentCh;
-
+	
+	  /**
+     * Constructs a Lexer object with the specified input expression.
+     *
+     * @param input The input expression to be analyzed and converted into tokens.
+     */
 	public Lexer(String input) {
 		this.input = input;
 		this.tokens = new ArrayList<>();
@@ -24,7 +31,10 @@ public class Lexer {
 		this.currentCh = input.length() > 0 ? this.input.charAt(currentPos) : '\0';
 	}
 
-	//JavaDoc
+	/**
+	 * The "getNext" method iterates throughout the input string and changes the current position by moving to the next.
+	 * 
+	 */
 	private void getNext() {
 		if (currentPos < this.input.length() - 1) {
 			currentPos++;
@@ -34,6 +44,11 @@ public class Lexer {
 	}
 
 	//JavaDoc
+	/*The "generateNumber" method is used to generate a token for a numerical value in the input expression.
+	 *It iterates through the input characters and creates numbers by concatenating digits with one decimal point.
+	 * @return Returns a new Token object with a numerical value.
+	 * @throws InvalidOperationException If the input contains more than one decimal point in a number.
+	 */
 	private Token generateNumber() throws InvalidOperationException {
 		int decCount = 0;
 		StringBuilder sb = new StringBuilder();
@@ -51,7 +66,13 @@ public class Lexer {
 		return new Token(Type.NUMBER, sb.toString());
 	}
 
-	//JavaDoc
+	/*
+	 * The method "getTokens" is used to generate a list of tokens from the input expression.
+	 * It iterates through the input characters and identifies different types of tokens based on their properties.
+	 * The recognized tokens include numbers, arithmetic operators (+, -, *, /), parentheses (,), and the end of input.
+	 * @return A List of Token objects representing the tokens found in the input expression.
+	 * @throws InvalidOperationException If the input contains unsupported characters or invalid numerical values.
+	 */
 	public List<Token> getTokens() throws InvalidOperationException {
 		while (currentPos < input.length()) {
 			if (Character.isWhitespace(currentCh)) {
@@ -96,36 +117,4 @@ public class Lexer {
 		}
 		return str.toString();
 	}
-	
-	// A method that returns true if the input expression has balanced parentheses, and false otherwise
-	public static boolean isBalanced(String expression) {
-	  // Create a stack to store the opening parentheses
-	  Stack<Character> stack = new Stack<>();
-	  // Loop through each character in the expression
-	  for (char c : expression.toCharArray()) {
-	    // If the character is an opening parenthesis, push it to the stack
-	    if (c == '(' || c == '{' || c == '[') {
-	      stack.push(c);
-	    }
-	    // If the character is a closing parenthesis, pop the top element from the stack and check if it matches
-	    else if (c == ')' || c == '}' || c == ']') {
-	      // If the stack is empty, it means there is no matching opening parenthesis, so return false
-	      if (stack.isEmpty()) {
-	        return false;
-	      }
-	      // Pop the top element from the stack
-	      char top = stack.pop();
-	      // Check if it matches with the closing parenthesis
-	      if ((c == ')' && top != '(') || (c == '}' && top != '{') || (c == ']' && top != '[')) {
-	        // If not, it means the parentheses are not balanced, so return false
-	        return false;
-	      }
-	    }
-	  }
-	  // After looping through all the characters, check if the stack is empty
-	  // If yes, it means all the parentheses are balanced, so return true
-	  // If no, it means there are some unmatched opening parentheses, so return false
-	  return stack.isEmpty();
-	}
-
 }

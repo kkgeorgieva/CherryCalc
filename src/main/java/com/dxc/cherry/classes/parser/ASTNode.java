@@ -5,25 +5,42 @@ import java.util.Arrays;
 
 import com.dxc.cherry.classes.Solver;
 
-//JavaDoc
+
+
+/**
+ * The class ASTNode represents a node in the abstract syntax tree, used to evaluate the expression.
+ */
 public class ASTNode {
 	private String value;
 	private ASTNode left;
 	private ASTNode right;
 	private final ArrayList<String> operationsList = new ArrayList<String>(Arrays.asList("+", "-", "/", "*"));
 
+	/**
+     * Constructs a leaf node with the given value.
+     *
+     * @param value The value represents the .
+     */
 	public ASTNode(String value) {
 		this.value = value;
 
 	}
-
-	// JavaDoc
+	
+	/**
+	 * Constructs a leaf node with the given value and left and right children nodes.
+	 * @param value The parameter represents an arithmetic operator
+	 * @param left The left child node.
+	 * @param right The right child node.
+	 */
 	public ASTNode(String value, ASTNode left, ASTNode right) {
 		this.value = value;
 		this.left = left;
 		this.right = right;
 	}
-
+	/**
+     * Returns the value of the current AST node.
+     * @return The value of the AST node as a string.
+     */
 	public String getValue() {
 		return value;
 	}
@@ -36,7 +53,10 @@ public class ASTNode {
 		}
 	}
 
-	// JavaDoc
+	/*
+	 * Evaluates the arithmetic expression represented by the ASTNode and its sub-trees.
+	 * @return The result of the evaluated arithmetic expression as a floating-point number.
+	 */
 	public float eval() {
 
 		String value = this.getValue();
