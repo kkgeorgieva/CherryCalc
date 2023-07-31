@@ -26,7 +26,7 @@ public class Parser {
 			} else if (curr_token.getType() == Token.Type.MINUS) {
 				getNext();
 				ASTNode rightNode = Factor();
-				result =  new ASTNode("+", result, rightNode);
+				result =  new ASTNode("-", result, rightNode);
 			}
 		}
 		return result;
