@@ -1,5 +1,6 @@
 package com.dxc.cherry.classes;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.dxc.cherry.classes.parser.ASTNode;
@@ -16,15 +17,20 @@ public class Calculator {
 	private float result;
 	private Lexer lexer;
 	private Parser parser;
+	private final HashMap<Character, Token> tokenMap;
 
 
+	public Calculator(HashMap<Character, Token> tokenMap) {
+		this.tokenMap = tokenMap;
+	}
+	
 	/**
 	 * @param ex This string represents the given arithmetic expression to be evaluated.
 	 * @return Returns the result of the evaluated expression.
 	 * @throws Exception Throws an exception if an error occurs during the process of lexical analysis, parsing or evaluation.
 	 */
 	public float calculate(String ex) throws Exception {
-		lexer = new Lexer(ex);
+		lexer = new Lexer(ex, tokenMap);
 		List<Token> tokens = lexer.getTokens();
 		
 		parser = new Parser(tokens);

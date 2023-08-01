@@ -2,6 +2,7 @@ package com.dxc.cherry.classes.parser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -18,17 +19,20 @@ public class Lexer {
 	private int currentPos;
 	private char currentCh;
 	
+	private final HashMap<Character, Token> tokenMap;
+	
 	  /**
      * Constructs a Lexer object with the specified input expression.
      *
      * @param input The input expression to be analyzed and converted into tokens.
      */
-	public Lexer(String input) {
+	public Lexer(String input, HashMap<Character, Token> tokenMap) {
 		this.input = input;
 		this.tokens = new ArrayList<>();
 		this.numberList = new ArrayList<>(Arrays.asList('.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'));
 		this.currentPos = 0;
 		this.currentCh = input.length() > 0 ? this.input.charAt(currentPos) : '\0';
+		this.tokenMap = tokenMap;
 	}
 
 	/**
@@ -79,24 +83,8 @@ public class Lexer {
 				getNext();
 			} else if (numberList.contains(currentCh)) {
 				tokens.add(generateNumber());
-				
-			} else if (currentCh == '+') {
-				tokens.add(new Token(Token.Type.PLUS, "+"));
-				getNext();
-			} else if (currentCh == '-') {
-				tokens.add(new Token(Token.Type.MINUS, "-"));
-				getNext();
-			} else if (currentCh == '*') {
-				tokens.add(new Token(Token.Type.MULTIPLY, "*"));
-				getNext();
-			} else if (currentCh == '/') {
-				tokens.add(new Token(Token.Type.DIVIDE, "/"));
-				getNext();
-			} else if (currentCh == '(') {
-				tokens.add(new Token(Token.Type.LEFT_PAREN, "("));
-				getNext();
-			} else if (currentCh == ')') {
-				tokens.add(new Token(Token.Type.RIGHT_PAREN, ")"));
+			} else if (tokenMap.containsKey(currentCh)) {
+				tokens.add(tokenMap.get(currentCh));
 				getNext();
 			} else if (currentCh == '\0') {
 				break;

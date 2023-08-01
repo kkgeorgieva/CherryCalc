@@ -3,7 +3,9 @@ package com.dxc.cherry.test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.dxc.cherry.classes.Calculator;
@@ -14,10 +16,21 @@ import com.dxc.cherry.exceptions.InvalidExpressionException;
 import com.dxc.cherry.exceptions.InvalidOperationException;
 
 class CalculatorTest {
+	
+	HashMap<Character, Token> setupTokenMap() {
+		HashMap<Character, Token> tokenMap = new HashMap<Character, Token>();
+		tokenMap.put('+', new Token(Token.Type.PLUS, "+"));
+		tokenMap.put('-', new Token(Token.Type.MINUS, "-"));
+		tokenMap.put('*', new Token(Token.Type.MULTIPLY, "*"));
+		tokenMap.put('/', new Token(Token.Type.DIVIDE, "/"));
+		tokenMap.put('(', new Token(Token.Type.LEFT_PAREN, "("));
+		tokenMap.put(')', new Token(Token.Type.RIGHT_PAREN, ")"));
+		return tokenMap;
+	}
 
 	@Test void ExampleExpressionShouldThrowInvalidOperationException() { //given
 	  String exampleExpression = "3+5*(7-1)/(7#8)"; 
-	  Calculator calc = new Calculator();
+	  Calculator calc = new Calculator(setupTokenMap());
 	  assertThrows(InvalidOperationException.class, () ->
 	  {calc.calculate(exampleExpression);}); 
 	}
@@ -25,20 +38,20 @@ class CalculatorTest {
 	@Test
 	void InvalidExpressionExceptionMissingBracketTest() {
 		String exampleExpression = "3+5)*(7-1)/(7+8)";
-		Calculator calc = new Calculator();
+		Calculator calc = new Calculator(setupTokenMap());
 		assertThrows(InvalidExpressionException.class, () -> { calc.calculate(exampleExpression); });
 	}
 
 	@Test
 	void InvalidExpressionExceptionMissingOperandTest() {
 		String exampleExpression = "3+5*(7-1)/(7+)";
-		Calculator calc = new Calculator();
+		Calculator calc = new Calculator(setupTokenMap());
 		assertThrows(InvalidExpressionException.class, () -> {calc.calculate(exampleExpression); });
 	}
 
 	@Test
 	void TestTokens() throws InvalidOperationException, InvalidExpressionException {
-		Lexer lexer = new Lexer("5 + 4.5 + 7");
+		Lexer lexer = new Lexer("5 + 4.5 + 7", setupTokenMap());
 		ArrayList<Token> tokens = (ArrayList<Token>) lexer.getTokens();
 		String expected = "Token{type=NUMBER, lexeme='5'}\n" + "Token{type=PLUS, lexeme='+'}\n"
 				+ "Token{type=NUMBER, lexeme='4.5'}\n" + "Token{type=PLUS, lexeme='+'}\n"
@@ -50,20 +63,20 @@ class CalculatorTest {
 
 	@Test
 	void CorrectCalculatorTest() throws Exception {
-		Calculator calc = new Calculator();
+		Calculator calc = new Calculator(setupTokenMap());
 		assertEquals(5, calc.calculate("3+5*(7-1)/(7+8)"));
 	}
 	
 	@Test
 	void ReturnResultTest() throws Exception {
-		Calculator calc = new Calculator();
+		Calculator calc = new Calculator(setupTokenMap());
 		calc.calculate("3+5*(7-1)/(7+8)");
 		assertEquals(5, calc.returnResult());
 	}
 	
 	@Test
 	void TestDivideByZero() throws Exception {
-		Calculator calc = new Calculator();
+		Calculator calc = new Calculator(setupTokenMap());
 		assertThrows(ArithmeticException.class, () -> {calc.calculate("3+5/(7-7)*(8-7)");});
 	}
 }
