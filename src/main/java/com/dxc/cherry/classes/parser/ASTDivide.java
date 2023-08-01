@@ -1,7 +1,5 @@
 package com.dxc.cherry.classes.parser;
 
-import com.dxc.cherry.classes.Solver;
-
 public class ASTDivide extends ASTNode{
 
 	/**

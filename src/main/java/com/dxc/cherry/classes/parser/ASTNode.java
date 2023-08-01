@@ -2,11 +2,6 @@ package com.dxc.cherry.classes.parser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import com.dxc.cherry.classes.Solver;
-
-
-
 /**
  * The class ASTNode represents a node in the abstract syntax tree, used to evaluate the expression.
  */
