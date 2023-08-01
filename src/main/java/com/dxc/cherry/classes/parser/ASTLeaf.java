@@ -20,6 +20,12 @@ public class ASTLeaf extends ASTNode {
 		return value;
 	}
 
+	@Override
+	public ASTNode createInstance(ASTNode left, ASTNode right) {
+		// TODO Auto-generated method stub
+		return new ASTLeaf(value);
+	}
+
 	
 }
 

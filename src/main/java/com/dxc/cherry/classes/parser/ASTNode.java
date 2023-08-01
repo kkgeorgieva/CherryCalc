@@ -1,7 +1,5 @@
 package com.dxc.cherry.classes.parser;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 /**
  * The class ASTNode represents a node in the abstract syntax tree, used to evaluate the expression.
  */
@@ -9,7 +7,6 @@ public abstract class ASTNode {
 	protected Float value;
 	protected ASTNode left;
 	protected ASTNode right;
-	private final ArrayList<String> operationsList = new ArrayList<String>(Arrays.asList("+", "-", "/", "*"));
 
 	/**
      * Constructs a leaf node with the given value.
@@ -41,4 +38,6 @@ public abstract class ASTNode {
 	 * @return The result of the evaluated arithmetic expression as a floating-point number.
 	 */
 	public abstract float eval();
+	
+	public abstract ASTNode createInstance(ASTNode left, ASTNode right);
 }

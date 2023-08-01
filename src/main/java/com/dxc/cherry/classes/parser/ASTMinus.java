@@ -20,4 +20,9 @@ public class ASTMinus extends ASTNode{
 		value = left.eval() - right.eval();
 		return value;
 	}
+	@Override
+	public ASTNode createInstance(ASTNode left, ASTNode right) {
+		// TODO Auto-generated method stub
+		return new ASTMinus(left, right);
+	}
 }

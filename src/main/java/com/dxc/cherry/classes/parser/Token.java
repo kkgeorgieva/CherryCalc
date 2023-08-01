@@ -13,9 +13,9 @@ public class Token {
         DIVIDE,
         LEFT_PAREN,
         RIGHT_PAREN,
+        POWER,
         END_OF_INPUT
     }
-
     private final Type type;
     private final String lexeme;
 
@@ -40,4 +40,21 @@ public class Token {
                 ", lexeme='" + lexeme + '\'' +
                 '}';
     }
+
+    // A method that checks if the token is an operator
+    public boolean isOperator() {
+        return type == Type.PLUS || type == Type.MINUS || type == Type.MULTIPLY || type == Type.DIVIDE || type == Type.POWER;
+    }
+
+    // A method that checks if the token has higher precedence than another token
+    public boolean hasHigherPrecedence(Token other) {
+        if (other == null) {
+            return false;
+        }
+        if (type == Type.MULTIPLY || type == Type.DIVIDE || type == Type.POWER) {
+            return other.type == Type.PLUS || other.type == Type.MINUS;
+        }
+        return false;
+    }
 }
+

@@ -18,10 +18,12 @@ public class Calculator {
 	private Lexer lexer;
 	private Parser parser;
 	private final HashMap<Character, Token> tokenMap;
+	private final HashMap<Token.Type, Class<? extends ASTNode>> tokenToClassMap;
 
 
-	public Calculator(HashMap<Character, Token> tokenMap) {
+	public Calculator(HashMap<Character, Token> tokenMap, HashMap<Token.Type, Class<? extends ASTNode>> tokenToClassMap) {
 		this.tokenMap = tokenMap;
+		this.tokenToClassMap = tokenToClassMap;
 	}
 	
 	/**
@@ -33,7 +35,7 @@ public class Calculator {
 		lexer = new Lexer(ex, tokenMap);
 		List<Token> tokens = lexer.getTokens();
 		
-		parser = new Parser(tokens);
+		parser = new Parser(tokens, tokenToClassMap);
 		ASTNode tree = parser.parseExpression();
 		
 		result = tree.eval();

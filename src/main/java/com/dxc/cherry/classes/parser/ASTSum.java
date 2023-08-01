@@ -22,4 +22,9 @@ public class ASTSum extends ASTNode{
 		value = left.eval() + right.eval();
 		return value;
 	}
+	
+	@Override
+	public ASTNode createInstance(ASTNode left, ASTNode right) {
+		return new ASTSum(left, right);
+	}
 }
