@@ -40,11 +40,11 @@ public class Parser {
 			if (curr_token.getType() == Token.Type.PLUS) {
 				getNext();
 				ASTNode rightNode = Factor();
-				result =  new ASTNode("+", result, rightNode);
+				result =  new ASTSum(result, rightNode);
 			} else if (curr_token.getType() == Token.Type.MINUS) {
 				getNext();
 				ASTNode rightNode = Factor();
-				result =  new ASTNode("-", result, rightNode);
+				result =  new ASTMinus(result, rightNode);
 			}
 		}
 		
@@ -69,11 +69,11 @@ public class Parser {
 			if (curr_token.getType() == Token.Type.MULTIPLY) {
 				getNext();
 				ASTNode rightNode = Term();
-				factor =  new ASTNode("*", factor, rightNode);
+				factor =  new ASTMultiply(factor, rightNode);
 			} else if (curr_token.getType() == Token.Type.DIVIDE) {
 				getNext();
 				ASTNode rightNode = Term();
-				factor =  new ASTNode("/", factor, rightNode);
+				factor =  new ASTDivide(factor, rightNode);
 			}
 		}
 		
@@ -102,7 +102,7 @@ public class Parser {
 			}
 			inBrackets = false;
 		} else if (curr_token.getType() == Token.Type.NUMBER) {
-			term = new ASTNode(curr_token.getLexeme(), null, null);
+			term = new ASTLeaf(Float.parseFloat(curr_token.getLexeme()));
 		}
 		getNext();
 		return term;

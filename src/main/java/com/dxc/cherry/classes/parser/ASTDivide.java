@@ -17,6 +17,8 @@ public class ASTDivide extends ASTNode{
 	 */
 	public float eval() {
 		value = left.eval()/ right.eval();
+		
+		if (right.value == 0) throw new ArithmeticException("\byZero");
 		return value;
 	}
 }

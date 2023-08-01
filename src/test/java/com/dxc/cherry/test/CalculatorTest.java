@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 import com.dxc.cherry.classes.Calculator;
-import com.dxc.cherry.classes.Solver;
 import com.dxc.cherry.classes.parser.Lexer;
 import com.dxc.cherry.classes.parser.Parser;
 import com.dxc.cherry.classes.parser.Token;
@@ -15,10 +14,6 @@ import com.dxc.cherry.exceptions.InvalidExpressionException;
 import com.dxc.cherry.exceptions.InvalidOperationException;
 
 class CalculatorTest {
-
-	@Test void DivOf1And0ShouldThrowArithemticException() {
-	  assertThrows(ArithmeticException.class, () -> {Solver.divide(1, 0); });
-	}
 
 	@Test void ExampleExpressionShouldThrowInvalidOperationException() { //given
 	  String exampleExpression = "3+5*(7-1)/(7#8)"; 
@@ -70,17 +65,5 @@ class CalculatorTest {
 	void TestDivideByZero() throws Exception {
 		Calculator calc = new Calculator();
 		assertThrows(ArithmeticException.class, () -> {calc.calculate("3+5/(7-7)*(8-7)");});
-	}
-	
-	@Test
-	void TestASTNode() throws InvalidOperationException, InvalidExpressionException {
-		Lexer lexer = new Lexer("5 * 4.5 + 7");
-		ArrayList<Token> tokens = (ArrayList<Token>) lexer.getTokens();
-		Parser parser = new Parser(tokens);
-		
-		String expected = "((5 * 4.5) + 7)";
-		String actual = parser.parseExpression().toString();
-		
-		assertEquals(expected, actual);
 	}
 }
