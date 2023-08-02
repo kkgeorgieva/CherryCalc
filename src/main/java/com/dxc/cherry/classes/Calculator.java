@@ -3,8 +3,9 @@ package com.dxc.cherry.classes;
 import java.util.HashMap;
 import java.util.List;
 
-import com.dxc.cherry.classes.parser.ASTNode;
 import com.dxc.cherry.classes.parser.Lexer;
+import com.dxc.cherry.classes.parser.Operation;
+import com.dxc.cherry.classes.parser.OperationProvider;
 import com.dxc.cherry.classes.parser.Parser;
 import com.dxc.cherry.classes.parser.Token;
 
@@ -18,11 +19,11 @@ public class Calculator {
 	private Lexer lexer;
 	private Parser parser;
 	private final HashMap<String, Token> tokenMap;
-	private final HashMap<Token, ASTNode> tokenToClassMap;
+	private final HashMap<Token, OperationProvider> tokenToClassMap;
 	public static CalculatorBuilder builder = new CalculatorBuilder();
 
 
-	public Calculator(HashMap<String, Token> tokenMap, HashMap<Token, ASTNode> tokenToClassMap) {
+	public Calculator(HashMap<String, Token> tokenMap, HashMap<Token, OperationProvider> tokenToClassMap) {
 		this.tokenMap = tokenMap;
 		this.tokenToClassMap = tokenToClassMap;
 	}
@@ -37,7 +38,7 @@ public class Calculator {
 		List<Token> tokens = lexer.getTokens();
 		
 		parser = new Parser(tokens, tokenToClassMap);
-		ASTNode tree = parser.parseExpression();
+		Operation tree = parser.parseExpression();
 		
 		result = tree.eval();
 		

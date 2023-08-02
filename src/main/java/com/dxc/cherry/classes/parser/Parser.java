@@ -11,29 +11,29 @@ public class Parser {
 	private int pos = 0;
 	private Token curr_token = null;
 	private final List<Token> tokens;
-	private final HashMap<Token, ASTNode> tokenToClassMap;
+	private final HashMap<Token, OperationProvider> tokenToClassMap;
 
-	public Parser(List<Token> tokens, HashMap<Token, ASTNode> tokenToClassMap) {
+	public Parser(List<Token> tokens, HashMap<Token, OperationProvider> tokenToClassMap) {
 		this.tokens = tokens;
 		this.tokenToClassMap = tokenToClassMap;
 		getNext();
 	}
 
-	public ASTNode parseExpression() throws InvalidExpressionException {
-		Stack<ASTNode> nodeStack = new Stack<>();
+	public Operation parseExpression() throws InvalidExpressionException {
+		Stack<Operation> nodeStack = new Stack<>();
 		Stack<Token> opStack = new Stack<>();
 
 		while (curr_token.getLexeme() != "\0") {
 			if (!curr_token.isOperator()) {
-				nodeStack.push(new ASTLeaf(Float.parseFloat(curr_token.getLexeme())));
+				nodeStack.push(new Number(Float.parseFloat(curr_token.getLexeme())));
 			} else if (curr_token.getLexeme() == "(") {
 				opStack.push(curr_token);
 			} else if (curr_token.getLexeme() == ")") {
 				while (!opStack.isEmpty() && opStack.peek().getLexeme() != "(") {
 					Token opToken = opStack.pop();
-					ASTNode opClass = tokenToClassMap.get(opToken);
-					ASTNode rightNode = nodeStack.pop();
-					ASTNode leftNode = nodeStack.pop();
+					OperationProvider opClass = tokenToClassMap.get(opToken);
+					Operation rightNode = nodeStack.pop();
+					Operation leftNode = nodeStack.pop();
 					nodeStack.push(createNewNode(opClass, leftNode, rightNode));
 				}
 				if (opStack.isEmpty()) {
@@ -43,9 +43,9 @@ public class Parser {
 			} else if (curr_token.isOperator()) {
 				while (!opStack.isEmpty() && opStack.peek().hasHigherPrecedence(curr_token)) {
 					Token opToken = opStack.pop();
-					ASTNode opClass = tokenToClassMap.get(opToken);
-					ASTNode rightNode = nodeStack.pop();
-					ASTNode leftNode = nodeStack.pop();
+					OperationProvider opClass = tokenToClassMap.get(opToken);
+					Operation rightNode = nodeStack.pop();
+					Operation leftNode = nodeStack.pop();
 					nodeStack.push(createNewNode(opClass, leftNode, rightNode));
 				}
 				opStack.push(curr_token);
@@ -61,12 +61,12 @@ public class Parser {
 			if (opToken.getLexeme() == "(" || opToken.getLexeme() == ")") {
 				throw new InvalidExpressionException("Mismatched parentheses");
 			}
-			ASTNode opClass = tokenToClassMap.get(opToken);
+			OperationProvider opClass = tokenToClassMap.get(opToken);
 			if (nodeStack.size() < 2) {
 				throw new InvalidExpressionException("Invalid expression");
 			}
-			ASTNode rightNode = nodeStack.pop();
-			ASTNode leftNode = nodeStack.pop();
+			Operation rightNode = nodeStack.pop();
+			Operation leftNode = nodeStack.pop();
 			nodeStack.push(createNewNode(opClass, leftNode, rightNode));
 		}
 
@@ -77,10 +77,10 @@ public class Parser {
 		return nodeStack.pop();
 	}
 
-	private ASTNode createNewNode(ASTNode opClass, ASTNode left, ASTNode right)
+	private Operation createNewNode(OperationProvider opClass, Operation left, Operation right)
 			throws InvalidExpressionException {
 		try {
-			return opClass.createInstance(left, right);
+			return opClass.getInstance(left, right);
 		} catch (Exception e) {
 			throw new InvalidExpressionException("Error creating new instance of AST node");
 		}

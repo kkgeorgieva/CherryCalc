@@ -1,12 +1,14 @@
-package com.dxc.cherry.classes.parser;
+package com.dxc.cherry.classes.parser.buildInOperations;
+
+import com.dxc.cherry.classes.parser.Operation;
 
 /**
  * The class ASTNode represents a node in the abstract syntax tree, used to evaluate the expression.
  */
-public abstract class ASTNode {
+public abstract class ASTNode implements Operation {
 	protected Float value;
-	protected ASTNode left;
-	protected ASTNode right;
+	protected Operation left;
+	protected Operation right;
 
 	/**
      * Constructs a leaf node with the given value.
@@ -26,19 +28,9 @@ public abstract class ASTNode {
 	 * @param left The left child node.
 	 * @param right The right child node.
 	 */
-	public ASTNode(ASTNode left, ASTNode right) {
+	public ASTNode(Operation left, Operation right) {
 		this.value = null;
 		this.left = left;
 		this.right = right;
 	}
-
-
-	/*
-	 * Evaluates the arithmetic expression represented by the ASTNode and its sub-trees.
-	 * @return The result of the evaluated arithmetic expression as a floating-point number.
-	 */
-	public abstract float eval();
-	
-	public abstract ASTNode createInstance(ASTNode left, ASTNode right);
-	public abstract String getSignature();
 }
