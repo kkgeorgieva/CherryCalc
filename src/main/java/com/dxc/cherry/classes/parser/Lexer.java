@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
-import com.dxc.cherry.classes.parser.Token.Type;
 import com.dxc.cherry.exceptions.InvalidOperationException;
 
 /**
@@ -67,7 +66,7 @@ public class Lexer {
 			sb.append(currentCh);
 			getNext();
 		}
-		return new Token(Type.NUMBER, sb.toString());
+		return new Token(sb.toString());
 	}
 
 	/*
@@ -93,7 +92,7 @@ public class Lexer {
 //			getNext();
 		}
 
-		tokens.add(new Token(Token.Type.END_OF_INPUT, "\0"));
+		tokens.add(new Token("\0"));
 		return tokens;
 	}
 
