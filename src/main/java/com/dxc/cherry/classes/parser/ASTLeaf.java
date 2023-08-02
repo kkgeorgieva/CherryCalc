@@ -27,6 +27,12 @@ public class ASTLeaf extends ASTNode {
 	}
 
 	
+	/**
+	 * @return the String representation of the value in the leaf.
+	 */
+	@Override
+	public String getSignature() {
+		return String.valueOf(value);
+	}
 }
-
 

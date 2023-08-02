@@ -21,9 +21,15 @@ public class ASTDivide extends ASTNode{
 		if (right.value == 0) throw new ArithmeticException("\byZero");
 		return value;
 	}
+	
 	@Override
 	public ASTNode createInstance(ASTNode left, ASTNode right) {
 		// TODO Auto-generated method stub
 		return new ASTDivide(left, right);
+	}
+	
+	@Override
+	public String getSignature() {
+		return "/";
 	}
 }

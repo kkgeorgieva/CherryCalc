@@ -25,4 +25,8 @@ public class ASTMinus extends ASTNode{
 		// TODO Auto-generated method stub
 		return new ASTMinus(left, right);
 	}
+	@Override
+	public String getSignature() {
+		return "-";
+	}
 }

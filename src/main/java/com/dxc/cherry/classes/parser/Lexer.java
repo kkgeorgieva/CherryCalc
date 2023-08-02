@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Stack;
 
 import com.dxc.cherry.exceptions.InvalidOperationException;
 
@@ -18,14 +17,14 @@ public class Lexer {
 	private int currentPos;
 	private char currentCh;
 	
-	private final HashMap<Character, Token> tokenMap;
+	private final HashMap<String, Token> tokenMap;
 	
 	  /**
      * Constructs a Lexer object with the specified input expression.
      *
      * @param input The input expression to be analyzed and converted into tokens.
      */
-	public Lexer(String input, HashMap<Character, Token> tokenMap) {
+	public Lexer(String input, HashMap<String, Token> tokenMap) {
 		this.input = input;
 		this.tokens = new ArrayList<>();
 		this.numberList = new ArrayList<>(Arrays.asList('.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'));
@@ -82,8 +81,8 @@ public class Lexer {
 				getNext();
 			} else if (numberList.contains(currentCh)) {
 				tokens.add(generateNumber());
-			} else if (tokenMap.containsKey(currentCh)) {
-				tokens.add(tokenMap.get(currentCh));
+			} else if (tokenMap.containsKey(String.valueOf(currentCh))) {
+				tokens.add(tokenMap.get(String.valueOf(currentCh)));
 				getNext();
 			} else if (currentCh == '\0') {
 				break;

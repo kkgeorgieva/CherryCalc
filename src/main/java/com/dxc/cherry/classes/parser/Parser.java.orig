@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
+import com.dxc.cherry.classes.parser.Token.Type;
 import com.dxc.cherry.exceptions.InvalidExpressionException;
 
 public class Parser {
@@ -11,11 +12,17 @@ public class Parser {
 	private int pos = 0;
 	private Token curr_token = null;
 	private final List<Token> tokens;
-	private final HashMap<Token, ASTNode> tokenToClassMap;
+<<<<<<< HEAD
+	private final HashMap<String, Class<? extends ASTNode>> tokenToClassMap;
 
-	public Parser(List<Token> tokens, HashMap<Token, ASTNode> tokenToClassMap) {
+	public Parser(List<Token> tokens, HashMap<String, Class<? extends ASTNode>> tokenToClassMap) {
+=======
+	private final HashMap<Token.Type,ASTNode> tokenToClassMap;
+
+	public Parser(List<Token> tokens, HashMap<Type, ASTNode> tokenToClassMap2) {
+>>>>>>> kiBranch
 		this.tokens = tokens;
-		this.tokenToClassMap = tokenToClassMap;
+		this.tokenToClassMap = tokenToClassMap2;
 		getNext();
 	}
 
@@ -24,14 +31,18 @@ public class Parser {
 		Stack<Token> opStack = new Stack<>();
 
 		while (curr_token.getLexeme() != "\0") {
-			if (!curr_token.isOperator()) {
+			if (curr_token.isOperator()) {
 				nodeStack.push(new ASTLeaf(Float.parseFloat(curr_token.getLexeme())));
 			} else if (curr_token.getLexeme() == "(") {
 				opStack.push(curr_token);
 			} else if (curr_token.getLexeme() == ")") {
 				while (!opStack.isEmpty() && opStack.peek().getLexeme() != "(") {
 					Token opToken = opStack.pop();
-					ASTNode opClass = tokenToClassMap.get(opToken);
+<<<<<<< HEAD
+					Class<? extends ASTNode> opClass = tokenToClassMap.get(opToken.getLexeme());
+=======
+					ASTNode opClass = tokenToClassMap.get(opToken.getType());
+>>>>>>> kiBranch
 					ASTNode rightNode = nodeStack.pop();
 					ASTNode leftNode = nodeStack.pop();
 					nodeStack.push(createNewNode(opClass, leftNode, rightNode));
@@ -43,7 +54,11 @@ public class Parser {
 			} else if (curr_token.isOperator()) {
 				while (!opStack.isEmpty() && opStack.peek().hasHigherPrecedence(curr_token)) {
 					Token opToken = opStack.pop();
-					ASTNode opClass = tokenToClassMap.get(opToken);
+<<<<<<< HEAD
+					Class<? extends ASTNode> opClass = tokenToClassMap.get(opToken.getLexeme());
+=======
+					ASTNode opClass = tokenToClassMap.get(opToken.getType());
+>>>>>>> kiBranch
 					ASTNode rightNode = nodeStack.pop();
 					ASTNode leftNode = nodeStack.pop();
 					nodeStack.push(createNewNode(opClass, leftNode, rightNode));
@@ -61,7 +76,11 @@ public class Parser {
 			if (opToken.getLexeme() == "(" || opToken.getLexeme() == ")") {
 				throw new InvalidExpressionException("Mismatched parentheses");
 			}
-			ASTNode opClass = tokenToClassMap.get(opToken);
+<<<<<<< HEAD
+			Class<? extends ASTNode> opClass = tokenToClassMap.get(opToken.getLexeme());
+=======
+			ASTNode opClass = tokenToClassMap.get(opToken.getType());
+>>>>>>> kiBranch
 			if (nodeStack.size() < 2) {
 				throw new InvalidExpressionException("Invalid expression");
 			}

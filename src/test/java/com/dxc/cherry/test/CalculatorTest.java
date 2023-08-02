@@ -13,7 +13,6 @@ import com.dxc.cherry.classes.parser.ASTDivide;
 import com.dxc.cherry.classes.parser.ASTMinus;
 import com.dxc.cherry.classes.parser.ASTMultiply;
 import com.dxc.cherry.classes.parser.ASTNode;
-import com.dxc.cherry.classes.parser.ASTPower;
 import com.dxc.cherry.classes.parser.ASTSum;
 import com.dxc.cherry.classes.parser.Lexer;
 import com.dxc.cherry.classes.parser.Parser;
@@ -23,50 +22,37 @@ import com.dxc.cherry.exceptions.InvalidOperationException;
 
 class CalculatorTest {
 	
-	HashMap<Character, Token> setupTokenMap() {
-		HashMap<Character, Token> tokenMap = new HashMap<Character, Token>();
-		tokenMap.put('+', new Token(Token.Type.PLUS, "+"));
-		tokenMap.put('-', new Token(Token.Type.MINUS, "-"));
-		tokenMap.put('*', new Token(Token.Type.MULTIPLY, "*"));
-		tokenMap.put('/', new Token(Token.Type.DIVIDE, "/"));
-		tokenMap.put('(', new Token(Token.Type.LEFT_PAREN, "("));
-		tokenMap.put(')', new Token(Token.Type.RIGHT_PAREN, ")"));
-		tokenMap.put('^', new Token(Token.Type.POWER, "^"));
-		return tokenMap;
-	}
-	
-	HashMap<Token.Type, Class<? extends ASTNode>> setupTokenToClassMap() {
-		HashMap<Token.Type, Class<? extends ASTNode>> operationsMap = new HashMap<Token.Type, Class<? extends ASTNode>>();
-		operationsMap.put(Token.Type.PLUS, ASTSum.class);
-		operationsMap.put(Token.Type.MINUS, ASTMinus.class);
-		operationsMap.put(Token.Type.MULTIPLY, ASTMultiply.class);
-		operationsMap.put(Token.Type.DIVIDE, ASTDivide.class);
-		operationsMap.put(Token.Type.POWER, ASTPower.class);
 
-		return operationsMap;
+	@Test void ExampleExpressionShouldThrowInvalidOperationException() {
+	  Calculator calc = Calculator.builder.include(new ASTSum(null, null), 0)
+								  .include(new ASTMultiply(null, null), 1)
+								  .include(new ASTMinus(null, null), 1)
+								  .include(new ASTDivide(null, null), 0).build();
+	  String exampleExpression = "3+5*(7-1)/(7#8)"; 
+	  assertThrows(InvalidOperationException.class, () ->
+	  {calc.calculate(exampleExpression);}); 
 	}
 
-//	@Test void ExampleExpressionShouldThrowInvalidOperationException() { //given
-//	  String exampleExpression = "3+5*(7-1)/(7#8)"; 
-//	  Calculator calc = new Calculator(setupTokenMap(), setupTokenToClassMap());
-//	  assertThrows(InvalidOperationException.class, () ->
-//	  {calc.calculate(exampleExpression);}); 
-//	}
-//
-//	@Test
-//	void InvalidExpressionExceptionMissingBracketTest() {
-//		String exampleExpression = "3+5)*(7-1)/(7+8)";
-//		Calculator calc = new Calculator(setupTokenMap(), setupTokenToClassMap());
-//		assertThrows(InvalidExpressionException.class, () -> { calc.calculate(exampleExpression); });
-//	}
-//
-//	@Test
-//	void InvalidExpressionExceptionMissingOperandTest() {
-//		String exampleExpression = "3+5*(7-1)/(7+)";
-//		Calculator calc = new Calculator(setupTokenMap(), setupTokenToClassMap());
-//		assertThrows(InvalidExpressionException.class, () -> {calc.calculate(exampleExpression); });
-//	}
-//
+	@Test
+	void InvalidExpressionExceptionMissingBracketTest() {
+		Calculator calc = Calculator.builder.include(new ASTSum(null, null), 0)
+				  .include(new ASTMultiply(null, null), 1)
+				  .include(new ASTMinus(null, null), 1)
+				  .include(new ASTDivide(null, null), 0).build();
+		String exampleExpression = "3+5)*(7-1)/(7+8)";
+		assertThrows(InvalidExpressionException.class, () -> { calc.calculate(exampleExpression); });
+	}
+
+	@Test
+	void InvalidExpressionExceptionMissingOperandTest() {
+		Calculator calc = Calculator.builder.include(new ASTSum(null, null), 0)
+				  .include(new ASTMultiply(null, null), 1)
+				  .include(new ASTMinus(null, null), 1)
+				  .include(new ASTDivide(null, null), 0).build();
+		String exampleExpression = "3+5*(7-1)/(7+)";
+		assertThrows(InvalidExpressionException.class, () -> {calc.calculate(exampleExpression); });
+	}
+
 //	@Test
 //	void TestTokens() throws InvalidOperationException, InvalidExpressionException {
 //		Lexer lexer = new Lexer("5 + 4.5 + 7", setupTokenMap());
@@ -81,20 +67,26 @@ class CalculatorTest {
 
 	@Test
 	void CorrectCalculatorTest() throws Exception {
-		Calculator calc = new Calculator(setupTokenMap(), setupTokenToClassMap());
-		assertEquals(1, calc.calculate("2*2 / 2^2"));
+		Calculator calc = Calculator.builder.include(new ASTSum(null, null), 0).include(new ASTMultiply(null, null), 1).build();
+		assertEquals(12, calc.calculate("(2+2)*3"));
 	}
 	
-//	@Test
-//	void ReturnResultTest() throws Exception {
-//		Calculator calc = new Calculator(setupTokenMap(), setupTokenToClassMap());
-//		calc.calculate("3+5*(7-1)/(7+8)");
-//		assertEquals(5, calc.returnResult());
-//	}
-//	
-//	@Test
-//	void TestDivideByZero() throws Exception {
-//		Calculator calc = new Calculator(setupTokenMap(), setupTokenToClassMap());
-//		assertThrows(ArithmeticException.class, () -> {calc.calculate("3+5/(7-7)*(8-7)");});
-//	}
+	@Test
+	void ReturnResultTest() throws Exception {
+		Calculator calc = Calculator.builder.include(new ASTSum(null, null), 0)
+				  .include(new ASTMultiply(null, null), 1)
+				  .include(new ASTMinus(null, null), 1)
+				  .include(new ASTDivide(null, null), 0).build();		
+		calc.calculate("3+5*(7-1)/(7+8)");
+		assertEquals(5, calc.returnResult());
+	}
+	
+	@Test
+	void TestDivideByZero() throws Exception {
+		Calculator calc = Calculator.builder.include(new ASTSum(null, null), 0)
+				  .include(new ASTMultiply(null, null), 1)
+				  .include(new ASTMinus(null, null), 1)
+				  .include(new ASTDivide(null, null), 0).build();
+		assertThrows(ArithmeticException.class, () -> {calc.calculate("3+5/(7-7)*(8-7)");});
+	}
 }
