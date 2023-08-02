@@ -27,4 +27,8 @@ public class ASTSum extends ASTNode{
 	public ASTNode createInstance(ASTNode left, ASTNode right) {
 		return new ASTSum(left, right);
 	}
+	@Override
+	public String getSignature() {
+		return "+";
+	}
 }

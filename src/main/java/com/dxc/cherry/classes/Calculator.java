@@ -17,11 +17,12 @@ public class Calculator {
 	private float result;
 	private Lexer lexer;
 	private Parser parser;
-	private final HashMap<Character, Token> tokenMap;
-	private final HashMap<Token.Type, Class<? extends ASTNode>> tokenToClassMap;
+	private final HashMap<String, Token> tokenMap;
+	private final HashMap<Token.Type, ASTNode> tokenToClassMap;
+	public CalculatorBuilder builder = new CalculatorBuilder();
 
 
-	public Calculator(HashMap<Character, Token> tokenMap, HashMap<Token.Type, Class<? extends ASTNode>> tokenToClassMap) {
+	public Calculator(HashMap<String, Token> tokenMap, HashMap<Token.Type, ASTNode> tokenToClassMap) {
 		this.tokenMap = tokenMap;
 		this.tokenToClassMap = tokenToClassMap;
 	}

@@ -40,4 +40,5 @@ public abstract class ASTNode {
 	public abstract float eval();
 	
 	public abstract ASTNode createInstance(ASTNode left, ASTNode right);
+	public abstract String getSignature();
 }

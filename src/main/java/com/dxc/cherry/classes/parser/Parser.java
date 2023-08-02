@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
+import com.dxc.cherry.classes.parser.Token.Type;
 import com.dxc.cherry.exceptions.InvalidExpressionException;
 
 public class Parser {
@@ -11,11 +12,11 @@ public class Parser {
 	private int pos = 0;
 	private Token curr_token = null;
 	private final List<Token> tokens;
-	private final HashMap<Token.Type, Class<? extends ASTNode>> tokenToClassMap;
+	private final HashMap<Token.Type,ASTNode> tokenToClassMap;
 
-	public Parser(List<Token> tokens, HashMap<Token.Type, Class<? extends ASTNode>> tokenToClassMap) {
+	public Parser(List<Token> tokens, HashMap<Type, ASTNode> tokenToClassMap2) {
 		this.tokens = tokens;
-		this.tokenToClassMap = tokenToClassMap;
+		this.tokenToClassMap = tokenToClassMap2;
 		getNext();
 	}
 
@@ -31,7 +32,7 @@ public class Parser {
 			} else if (curr_token.getType() == Token.Type.RIGHT_PAREN) {
 				while (!opStack.isEmpty() && opStack.peek().getType() != Token.Type.LEFT_PAREN) {
 					Token opToken = opStack.pop();
-					Class<? extends ASTNode> opClass = tokenToClassMap.get(opToken.getType());
+					ASTNode opClass = tokenToClassMap.get(opToken.getType());
 					ASTNode rightNode = nodeStack.pop();
 					ASTNode leftNode = nodeStack.pop();
 					nodeStack.push(createNewNode(opClass, leftNode, rightNode));
@@ -43,7 +44,7 @@ public class Parser {
 			} else if (curr_token.isOperator()) {
 				while (!opStack.isEmpty() && opStack.peek().hasHigherPrecedence(curr_token)) {
 					Token opToken = opStack.pop();
-					Class<? extends ASTNode> opClass = tokenToClassMap.get(opToken.getType());
+					ASTNode opClass = tokenToClassMap.get(opToken.getType());
 					ASTNode rightNode = nodeStack.pop();
 					ASTNode leftNode = nodeStack.pop();
 					nodeStack.push(createNewNode(opClass, leftNode, rightNode));
@@ -61,7 +62,7 @@ public class Parser {
 			if (opToken.getType() == Token.Type.LEFT_PAREN || opToken.getType() == Token.Type.RIGHT_PAREN) {
 				throw new InvalidExpressionException("Mismatched parentheses");
 			}
-			Class<? extends ASTNode> opClass = tokenToClassMap.get(opToken.getType());
+			ASTNode opClass = tokenToClassMap.get(opToken.getType());
 			if (nodeStack.size() < 2) {
 				throw new InvalidExpressionException("Invalid expression");
 			}
@@ -77,10 +78,10 @@ public class Parser {
 		return nodeStack.pop();
 	}
 
-	private ASTNode createNewNode(Class<? extends ASTNode> opClass, ASTNode left, ASTNode right)
+	private ASTNode createNewNode(ASTNode opClass, ASTNode left, ASTNode right)
 			throws InvalidExpressionException {
 		try {
-			return opClass.getDeclaredConstructor(ASTNode.class, ASTNode.class).newInstance(left, right);
+			return opClass.createInstance(left, right);
 		} catch (Exception e) {
 			throw new InvalidExpressionException("Error creating new instance of AST node");
 		}

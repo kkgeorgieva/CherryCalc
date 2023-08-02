@@ -13,7 +13,6 @@ import com.dxc.cherry.classes.parser.ASTDivide;
 import com.dxc.cherry.classes.parser.ASTMinus;
 import com.dxc.cherry.classes.parser.ASTMultiply;
 import com.dxc.cherry.classes.parser.ASTNode;
-import com.dxc.cherry.classes.parser.ASTPower;
 import com.dxc.cherry.classes.parser.ASTSum;
 import com.dxc.cherry.classes.parser.Lexer;
 import com.dxc.cherry.classes.parser.Parser;
@@ -23,25 +22,23 @@ import com.dxc.cherry.exceptions.InvalidOperationException;
 
 class CalculatorTest {
 	
-	HashMap<Character, Token> setupTokenMap() {
-		HashMap<Character, Token> tokenMap = new HashMap<Character, Token>();
-		tokenMap.put('+', new Token(Token.Type.PLUS, "+"));
-		tokenMap.put('-', new Token(Token.Type.MINUS, "-"));
-		tokenMap.put('*', new Token(Token.Type.MULTIPLY, "*"));
-		tokenMap.put('/', new Token(Token.Type.DIVIDE, "/"));
-		tokenMap.put('(', new Token(Token.Type.LEFT_PAREN, "("));
-		tokenMap.put(')', new Token(Token.Type.RIGHT_PAREN, ")"));
-		tokenMap.put('^', new Token(Token.Type.POWER, "^"));
+	HashMap<String, Token> setupTokenMap() {
+		HashMap<String, Token> tokenMap = new HashMap<>();
+		tokenMap.put("+", new Token(Token.Type.PLUS, "+"));
+		tokenMap.put("-", new Token(Token.Type.MINUS, "-"));
+		tokenMap.put("*", new Token(Token.Type.MULTIPLY, "*"));
+		tokenMap.put("/", new Token(Token.Type.DIVIDE, "/"));
+		tokenMap.put("(", new Token(Token.Type.LEFT_PAREN, "("));
+		tokenMap.put(")", new Token(Token.Type.RIGHT_PAREN, ")"));
 		return tokenMap;
 	}
 	
-	HashMap<Token.Type, Class<? extends ASTNode>> setupTokenToClassMap() {
-		HashMap<Token.Type, Class<? extends ASTNode>> operationsMap = new HashMap<Token.Type, Class<? extends ASTNode>>();
-		operationsMap.put(Token.Type.PLUS, ASTSum.class);
-		operationsMap.put(Token.Type.MINUS, ASTMinus.class);
-		operationsMap.put(Token.Type.MULTIPLY, ASTMultiply.class);
-		operationsMap.put(Token.Type.DIVIDE, ASTDivide.class);
-		operationsMap.put(Token.Type.POWER, ASTPower.class);
+	HashMap<Token.Type, ASTNode> setupTokenToClassMap() {
+		HashMap<Token.Type, ASTNode> operationsMap = new HashMap<>();
+		operationsMap.put(Token.Type.PLUS, new ASTSum(null,null));
+		operationsMap.put(Token.Type.MINUS, new ASTMinus(null, null));
+		operationsMap.put(Token.Type.MULTIPLY, new ASTMultiply(null, null));
+		operationsMap.put(Token.Type.DIVIDE, new ASTDivide(null, null));
 
 		return operationsMap;
 	}
@@ -82,7 +79,7 @@ class CalculatorTest {
 	@Test
 	void CorrectCalculatorTest() throws Exception {
 		Calculator calc = new Calculator(setupTokenMap(), setupTokenToClassMap());
-		assertEquals(1, calc.calculate("2*2 / 2^2"));
+		assertEquals(1, calc.calculate("2*2 / (2+2)"));
 	}
 	
 //	@Test

@@ -24,4 +24,8 @@ public class ASTMultiply extends ASTNode{
 		// TODO Auto-generated method stub
 		return new ASTMultiply(left, right);
 	}
+	@Override
+	public String getSignature() {
+		return "*";
+	}
 }
