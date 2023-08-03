@@ -45,18 +45,6 @@ class CalculatorTest {
 		assertThrows(InvalidExpressionException.class, () -> {calc.calculate(exampleExpression); });
 	}
 
-//	@Test
-//	void TestTokens() throws InvalidOperationException, InvalidExpressionException {
-//		Lexer lexer = new Lexer("5 + 4.5 + 7", setupTokenMap());
-//		ArrayList<Token> tokens = (ArrayList<Token>) lexer.getTokens();
-//		String expected = "Token{type=NUMBER, lexeme='5'}\n" + "Token{type=PLUS, lexeme='+'}\n"
-//				+ "Token{type=NUMBER, lexeme='4.5'}\n" + "Token{type=PLUS, lexeme='+'}\n"
-//				+ "Token{type=NUMBER, lexeme='7'}\n" + "Token{type=END_OF_INPUT, lexeme='\0'}\n";
-//		String actual = lexer.toString();
-//		assertFalse(tokens.isEmpty());
-//		assertEquals(expected, actual);
-//	}
-
 	@Test
 	void CorrectCalculatorTest() throws Exception {
 		Calculator calc = Calculator.builder.include(new AdditionOpFactory(), 0).include(new MultiplicationOpFactory(), 1).build();
