@@ -1,6 +1,6 @@
-package com.dxc.cherry.classes.parser.buildInOperations;
+package com.dxc.cherry.classes.buildInOperations;
 
-import com.dxc.cherry.classes.parser.Operation;
+import com.dxc.cherry.interfaces.parser.Operation;
 
 /**
  * The class ASTNode represents a node in the abstract syntax tree, used to evaluate the expression.
@@ -12,8 +12,7 @@ public abstract class ASTNode implements Operation {
 
 	/**
      * Constructs a leaf node with the given value.
-     *
-     * @param value The value represents the .
+     * @param value The value parameter represents the number.
      */
 	public ASTNode(Float value) {
 		this.value = value;

@@ -4,11 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import com.dxc.cherry.classes.Calculator;
-import com.dxc.cherry.classes.parser.buildInOperations.AdditionOpFactory;
-import com.dxc.cherry.classes.parser.buildInOperations.DivisionOpFactory;
-import com.dxc.cherry.classes.parser.buildInOperations.MultiplicationOpFactory;
-import com.dxc.cherry.classes.parser.buildInOperations.SubtractionOpFactory;
+import com.dxc.cherry.classes.Calculator.Calculator;
+import com.dxc.cherry.classes.buildInOperations.AdditionOpFactory;
+import com.dxc.cherry.classes.buildInOperations.DivisionOpFactory;
+import com.dxc.cherry.classes.buildInOperations.MultiplicationOpFactory;
+import com.dxc.cherry.classes.buildInOperations.SubtractionOpFactory;
 import com.dxc.cherry.exceptions.InvalidExpressionException;
 import com.dxc.cherry.exceptions.InvalidOperationException;
 

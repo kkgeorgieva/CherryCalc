@@ -1,7 +1,7 @@
-package com.dxc.cherry.classes.parser.buildInOperations;
+package com.dxc.cherry.classes.buildInOperations;
 
-import com.dxc.cherry.classes.parser.Operation;
-import com.dxc.cherry.classes.parser.OperationProvider;
+import com.dxc.cherry.interfaces.parser.Operation;
+import com.dxc.cherry.interfaces.parser.OperationProvider;
 
 public class AdditionOpFactory implements OperationProvider {
 	
@@ -21,12 +21,18 @@ public class AdditionOpFactory implements OperationProvider {
 		}
 	}
 
-
+/**
+ * Returns an instance of the operation inside of this factory.
+ * @param left The left hand side of the expression. 
+ * @param right The right hand side of the expression.
+ */
 	@Override
 	public Operation getInstance(Operation left, Operation right) {
 		return new Addition(left, right);
 	}
-
+/**
+ * @param return Returns the text representation of the operation inside of this factory.
+ */
 	@Override
 	public String operationSignature() {
 		return "+";

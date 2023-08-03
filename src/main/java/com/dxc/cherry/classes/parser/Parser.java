@@ -5,7 +5,12 @@ import java.util.List;
 import java.util.Stack;
 
 import com.dxc.cherry.exceptions.InvalidExpressionException;
-
+import com.dxc.cherry.interfaces.parser.Operation;
+import com.dxc.cherry.interfaces.parser.OperationProvider;
+/**
+ * The "Parser" class accepts a list of tokens computed by the "Lexer" class and creates and abstract 
+ * syntax tree using the different operations and numbers, inputed by the user.
+ */
 public class Parser {
 
 	private int pos = 0;
@@ -14,13 +19,21 @@ public class Parser {
 	private final HashMap<Token, OperationProvider> tokenToClassMap;
 	private final Stack<Operation> nodeStack = new Stack<>();
 	private final Stack<Token> opStack = new Stack<>();
-
+/**
+ * 
+ * @param tokens The list of tokens representing the expression.
+ * @param tokenToClassMap A map containing the association between tokens and operation providers.
+ */
 	public Parser(List<Token> tokens, HashMap<Token, OperationProvider> tokenToClassMap) {
 		this.tokens = tokens;
 		this.tokenToClassMap = tokenToClassMap;
 		getNext();
 	}
-
+/**
+ * 
+ * @return Returns the the abstract syntax tree, representing the whole expression.
+ * @throws InvalidExpressionException Throws an exception when an invalid token is passed.
+ */
 	public Operation parseExpression() throws InvalidExpressionException {
 
 		while (curr_token.getLexeme() != "\0") {
@@ -75,7 +88,7 @@ public class Parser {
 		if (opStack.isEmpty()) {
 			throw new InvalidExpressionException("Mismatched parentheses");
 		}
-		opStack.pop(); // remove left parenthesis
+		opStack.pop();
 	}
 
 	private void precedenceSorter() throws InvalidExpressionException {

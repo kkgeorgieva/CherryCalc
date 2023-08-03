@@ -36,12 +36,19 @@ public class Token {
                 '}';
     }
 
-    // A method that checks if the token is an operator
+    /**
+     * A method that checks if the token is an operator
+     * @return Returns true or false.
+     */
     public boolean isOperator() {
         return this.isOperator;
     }
 
-    // A method that checks if the token has higher precedence than another token
+    /** 
+     * A method that checks if the token has higher precedence than another token
+     * @param other Represents the other token.
+     * @return Returns true if the current token has a higher precedence, otherwise returns false.
+     */
     public boolean hasHigherPrecedence(Token other) {
        return this.precedence>other.precedence;
     }

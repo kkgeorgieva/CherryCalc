@@ -1,20 +1,19 @@
-package com.dxc.cherry.classes;
+package com.dxc.cherry.classes.Calculator;
 
 import java.util.HashMap;
 import java.util.List;
 
 import com.dxc.cherry.classes.parser.Lexer;
-import com.dxc.cherry.classes.parser.Operation;
-import com.dxc.cherry.classes.parser.OperationProvider;
 import com.dxc.cherry.classes.parser.Parser;
 import com.dxc.cherry.classes.parser.Token;
+import com.dxc.cherry.interfaces.parser.Operation;
+import com.dxc.cherry.interfaces.parser.OperationProvider;
 
 /**
  * The calculator class is responsible for making evaluations of arithmetic expressions.
  * It performs a lexical analysis and parsing and creates an Abstract Syntax Tree, after which it evaluates the expression. 
  */
 public class Calculator {
-
 	private float result;
 	private Lexer lexer;
 	private Parser parser;
