@@ -12,6 +12,8 @@ public class Parser {
 	private Token curr_token = null;
 	private final List<Token> tokens;
 	private final HashMap<Token, OperationProvider> tokenToClassMap;
+	private final Stack<Operation> nodeStack = new Stack<>();
+	private final Stack<Token> opStack = new Stack<>();
 
 	public Parser(List<Token> tokens, HashMap<Token, OperationProvider> tokenToClassMap) {
 		this.tokens = tokens;
@@ -20,8 +22,6 @@ public class Parser {
 	}
 
 	public Operation parseExpression() throws InvalidExpressionException {
-		Stack<Operation> nodeStack = new Stack<>();
-		Stack<Token> opStack = new Stack<>();
 
 		while (curr_token.getLexeme() != "\0") {
 			if (!curr_token.isOperator()) {
@@ -29,26 +29,9 @@ public class Parser {
 			} else if (curr_token.getLexeme() == "(") {
 				opStack.push(curr_token);
 			} else if (curr_token.getLexeme() == ")") {
-				while (!opStack.isEmpty() && opStack.peek().getLexeme() != "(") {
-					Token opToken = opStack.pop();
-					OperationProvider opClass = tokenToClassMap.get(opToken);
-					Operation rightNode = nodeStack.pop();
-					Operation leftNode = nodeStack.pop();
-					nodeStack.push(createNewNode(opClass, leftNode, rightNode));
-				}
-				if (opStack.isEmpty()) {
-					throw new InvalidExpressionException("Mismatched parentheses");
-				}
-				opStack.pop(); // remove left parenthesis
+				bracketsHandler();
 			} else if (curr_token.isOperator()) {
-				while (!opStack.isEmpty() && opStack.peek().hasHigherPrecedence(curr_token)) {
-					Token opToken = opStack.pop();
-					OperationProvider opClass = tokenToClassMap.get(opToken);
-					Operation rightNode = nodeStack.pop();
-					Operation leftNode = nodeStack.pop();
-					nodeStack.push(createNewNode(opClass, leftNode, rightNode));
-				}
-				opStack.push(curr_token);
+				precedenceSorter();
 			} else {
 				throw new InvalidExpressionException("Invalid token: " + curr_token);
 			}
@@ -56,6 +39,16 @@ public class Parser {
 			getNext();
 		}
 
+		treeCreator();
+
+		if (nodeStack.size() != 1) {
+			throw new InvalidExpressionException("Invalid expression");
+		}
+
+		return nodeStack.pop();
+	}
+
+	private void treeCreator() throws InvalidExpressionException {
 		while (!opStack.isEmpty()) {
 			Token opToken = opStack.pop();
 			if (opToken.getLexeme() == "(" || opToken.getLexeme() == ")") {
@@ -69,12 +62,31 @@ public class Parser {
 			Operation leftNode = nodeStack.pop();
 			nodeStack.push(createNewNode(opClass, leftNode, rightNode));
 		}
+	}
 
-		if (nodeStack.size() != 1) {
-			throw new InvalidExpressionException("Invalid expression");
+	private void bracketsHandler() throws InvalidExpressionException {
+		while (!opStack.isEmpty() && opStack.peek().getLexeme() != "(") {
+			Token opToken = opStack.pop();
+			OperationProvider opClass = tokenToClassMap.get(opToken);
+			Operation rightNode = nodeStack.pop();
+			Operation leftNode = nodeStack.pop();
+			nodeStack.push(createNewNode(opClass, leftNode, rightNode));
 		}
+		if (opStack.isEmpty()) {
+			throw new InvalidExpressionException("Mismatched parentheses");
+		}
+		opStack.pop(); // remove left parenthesis
+	}
 
-		return nodeStack.pop();
+	private void precedenceSorter() throws InvalidExpressionException {
+		while (!opStack.isEmpty() && opStack.peek().hasHigherPrecedence(curr_token)) {
+			Token opToken = opStack.pop();
+			OperationProvider opClass = tokenToClassMap.get(opToken);
+			Operation rightNode = nodeStack.pop();
+			Operation leftNode = nodeStack.pop();
+			nodeStack.push(createNewNode(opClass, leftNode, rightNode));
+		}
+		opStack.push(curr_token);
 	}
 
 	private Operation createNewNode(OperationProvider opClass, Operation left, Operation right)
